@@ -282,12 +282,30 @@
 /* Hero */
 .landing-hero {
   text-align: center;
-  padding: 56px 0 16px;
+  padding: 96px 48px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: url('/cafe-bg.jpg') center center / cover no-repeat;
 }
+
+.landing-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 8, 6, 0.62) 0%,
+    rgba(10, 8, 6, 0.72) 100%
+  );
+  z-index: 0;
+}
+
+.landing-hero > * { position: relative; z-index: 1; }
 
 .landing-eyebrow {
   display: inline-flex;
@@ -310,19 +328,25 @@
   font-weight: 700;
   letter-spacing: -2.5px;
   line-height: 1.05;
-  color: var(--text);
+  color: #FFFFFF;
   margin-bottom: 22px;
   max-width: 680px;
 }
 
 .landing-title em {
   font-style: normal;
-  color: var(--accent);
+  color: #7DB3FA;
+}
+
+.landing-eyebrow {
+  color: #7DB3FA;
+  background: rgba(79,142,247,0.18);
+  border-color: rgba(125,179,250,0.35);
 }
 
 .landing-subtitle {
   font-size: 17px;
-  color: var(--text-sub);
+  color: rgba(255,255,255,0.75);
   line-height: 1.7;
   max-width: 520px;
   margin-bottom: 36px;
@@ -337,9 +361,20 @@
   margin-bottom: 16px;
 }
 
+.landing-hero-cta .btn--ghost {
+  border-color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.08);
+}
+.landing-hero-cta .btn--ghost:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
+
 .landing-hero-note {
   font-size: 12px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.45);
 }
 
 /* Sections */
