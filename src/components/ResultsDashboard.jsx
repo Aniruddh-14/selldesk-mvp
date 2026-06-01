@@ -200,7 +200,7 @@ export default function ResultsDashboard({ results, onBack, onReset }) {
           <div className="chart-card-header">
             <span className="chart-card-title">Revenue vs Profit by item</span>
             <div className="chart-legend">
-              <span className="legend-dot" style={{ background: '#ff5e6c' }} />Revenue
+              <span className="legend-dot" style={{ background: '#3b7eff' }} />Revenue
               <span className="legend-dot" style={{ background: '#feb300' }} />Profit
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function ResultsDashboard({ results, onBack, onReset }) {
                 width={52}
               />
               <Tooltip content={<RevenueTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
-              <Bar dataKey="revenue" fill="#ff5e6c" radius={[4,4,0,0]} />
+              <Bar dataKey="revenue" fill="#3b7eff" radius={[4,4,0,0]} />
               <Bar dataKey="profit"  fill="#feb300" radius={[4,4,0,0]} />
             </BarChart>
           </ResponsiveContainer>

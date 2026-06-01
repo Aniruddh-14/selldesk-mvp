@@ -22,10 +22,10 @@
   --border:       #f0d98a;
   --border-hi:    #e8c960;
 
-  /* Accent = Coral Pink */
-  --accent:       #ff5e6c;
-  --accent-dim:   rgba(255, 94, 108, 0.1);
-  --accent-glow:  rgba(255, 94, 108, 0.25);
+  /* Accent = Blue */
+  --accent:       #3b7eff;
+  --accent-dim:   rgba(59, 126, 255, 0.1);
+  --accent-glow:  rgba(59, 126, 255, 0.25);
 
   /* Text — warm dark brown on beige */
   --text:         #1c0f00;
