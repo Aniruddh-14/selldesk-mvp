@@ -282,11 +282,17 @@
 /* Hero */
 .landing-hero {
   text-align: center;
-  padding: 56px 0 16px;
+  padding: 80px 48px 72px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(139,92,246,0.07) 0%, transparent 60%),
+    linear-gradient(160deg, #f0f5ff 0%, #ffffff 50%, #f5f0ff 100%);
+  border: 1px solid rgba(79,142,247,0.1);
 }
 
 .landing-eyebrow {
