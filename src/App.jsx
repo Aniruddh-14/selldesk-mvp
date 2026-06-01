@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import HomeScreen from './components/HomeScreen'
 import DataTable from './components/DataTable'
 import ResultsDashboard from './components/ResultsDashboard'
+import DemoModal from './components/DemoModal'
 import './App.css'
 
 const pageVariants = {
@@ -15,6 +16,7 @@ export default function App() {
   const [screen, setScreen] = useState('home')
   const [rows, setRows] = useState([])
   const [results, setResults] = useState(null)
+  const [showDemo, setShowDemo] = useState(false)
 
   function handleDataReady(initialRows) {
     setRows(initialRows)
@@ -37,6 +39,9 @@ export default function App() {
       <header className="app-header">
         <span className="app-logo">Sell<span>desk</span></span>
         <span className="app-tagline">Revenue intelligence for café owners</span>
+        <button className="btn btn--primary btn--sm" onClick={() => setShowDemo(true)}>
+          Book a Demo
+        </button>
       </header>
 
       <main className="app-main">
@@ -67,6 +72,8 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
+
+      {showDemo && <DemoModal onClose={() => setShowDemo(false)} />}
 
       <footer className="app-footer">
         <span className="app-footer-copy">© 2026 Selldesk. All rights reserved.</span>
