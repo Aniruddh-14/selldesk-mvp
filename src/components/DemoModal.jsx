@@ -60,7 +60,7 @@ export default function DemoModal({ onClose }) {
                   className="form-input"
                   name="name"
                   type="text"
-                  placeholder="Rahul Sharma"
+                  placeholder="John Doe"
                   value={form.name}
                   onChange={handleChange}
                   required
