@@ -7,24 +7,32 @@
 }
 
 :root {
-  --bg:          #0F1117;
-  --surface:     #181C27;
-  --surface-2:   #1E2335;
-  --border:      #2A2F45;
+  --bg:          #FFFFFF;
+  --surface:     #F7F8FA;
+  --surface-2:   #EFF1F5;
+  --border:      #E4E6EA;
+  --border-hi:   #CBD0D8;
   --accent:      #4F8EF7;
-  --accent-dim:  rgba(79, 142, 247, 0.15);
-  --text:        #E8EAF0;
-  --text-muted:  #7A8099;
+  --accent-dim:  rgba(79, 142, 247, 0.08);
+  --accent-glow: rgba(79, 142, 247, 0.18);
+  --text:        #0D0D10;
+  --text-muted:  #A0A8B5;
+  --text-sub:    #6B7280;
 
-  --danger:      #F75F5F;
-  --danger-bg:   rgba(247, 95, 95, 0.12);
-  --warning:     #F7B94F;
-  --warning-bg:  rgba(247, 185, 79, 0.12);
-  --success:     #4FF7A0;
-  --success-bg:  rgba(79, 247, 160, 0.12);
+  --danger:      #EF4444;
+  --danger-bg:   rgba(239, 68, 68, 0.07);
+  --warning:     #F59E0B;
+  --warning-bg:  rgba(245, 158, 11, 0.07);
+  --success:     #10B981;
+  --success-bg:  rgba(16, 185, 129, 0.07);
 
-  --radius:      8px;
-  --radius-lg:   12px;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.04);
+
+  --radius:      10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
 }
 
 html, body, #root {
@@ -36,7 +44,7 @@ body {
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 

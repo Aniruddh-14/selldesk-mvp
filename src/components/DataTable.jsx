@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { marginPct } from '../utils/ruleEngine'
 import { runRules } from '../utils/ruleEngine'
 import { getRecommendations } from '../utils/claudeApi'
@@ -102,7 +103,13 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
               const colorClass = pct !== null ? `margin--${marginColor(pct)}` : ''
 
               return (
-                <tr key={row.id}>
+                <motion.tr
+                  key={row.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25 }}
+                  layout
+                >
                   <td>
                     <input
                       className="cell-input cell-input--item"
@@ -155,7 +162,7 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
                       title="Delete row"
                     >✕</button>
                   </td>
-                </tr>
+                </motion.tr>
               )
             })}
           </tbody>

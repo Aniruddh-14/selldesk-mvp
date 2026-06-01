@@ -1,10 +1,16 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import HomeScreen from './components/HomeScreen'
 import DataTable from './components/DataTable'
 import ResultsDashboard from './components/ResultsDashboard'
 import './App.css'
 
-// screen: 'home' | 'table' | 'results'
+const pageVariants = {
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } },
+  exit:    { opacity: 0, y: -12, transition: { duration: 0.2, ease: 'easeIn' } },
+}
+
 export default function App() {
   const [screen, setScreen] = useState('home')
   const [rows, setRows] = useState([])
@@ -29,29 +35,37 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <span className="app-logo">Selldesk</span>
+        <span className="app-logo">Sell<span>desk</span></span>
         <span className="app-tagline">Revenue intelligence for café owners</span>
       </header>
 
       <main className="app-main">
-        {screen === 'home' && (
-          <HomeScreen onDataReady={handleDataReady} />
-        )}
-        {screen === 'table' && (
-          <DataTable
-            rows={rows}
-            setRows={setRows}
-            onAnalysisComplete={handleAnalysisComplete}
-            onBack={handleReset}
-          />
-        )}
-        {screen === 'results' && (
-          <ResultsDashboard
-            results={results}
-            onBack={() => setScreen('table')}
-            onReset={handleReset}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          {screen === 'home' && (
+            <motion.div key="home" {...pageVariants}>
+              <HomeScreen onDataReady={handleDataReady} />
+            </motion.div>
+          )}
+          {screen === 'table' && (
+            <motion.div key="table" {...pageVariants}>
+              <DataTable
+                rows={rows}
+                setRows={setRows}
+                onAnalysisComplete={handleAnalysisComplete}
+                onBack={handleReset}
+              />
+            </motion.div>
+          )}
+          {screen === 'results' && (
+            <motion.div key="results" {...pageVariants}>
+              <ResultsDashboard
+                results={results}
+                onBack={() => setScreen('table')}
+                onReset={handleReset}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   )
