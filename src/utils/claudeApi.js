@@ -49,7 +49,7 @@ function mockRecommendations(rows, flags) {
   return recs
 }
 
-export async function getRecommendations(rows, flags) {
+export async function getRecommendations(rows, flags, context = {}) {
   if (!API_KEY) {
     await new Promise(r => setTimeout(r, 900))
     return mockRecommendations(rows, flags)
@@ -65,25 +65,38 @@ export async function getRecommendations(rows, flags) {
     ...flags.success.map((f) => `STAR — ${f.row.item}: ${f.reason}`),
   ].join('\n') || 'No flags.'
 
+  const contextText = [
+    `Weather: ${context.weather ?? 'unknown'}`,
+    `Time of day: ${context.timeOfDay ?? 'unknown'}`,
+    `Café busyness right now: ${context.busyness ?? 'unknown'}`,
+    context.occasion ? `Special occasion: ${context.occasion}` : 'No special occasion today',
+  ].join('\n')
+
   const prompt = `You are a revenue advisor for independent café owners in India.
 
-Here is the weekly sales data (${rows.length} items):
+Weekly sales data (${rows.length} items):
 ${tableText}
 
 Rule-engine flags:
 ${flagText}
 
-Return ONLY the recommendations that are genuinely warranted by this specific data. Do not pad to a fixed number.
+Current situation at the café:
+${contextText}
+
+Use the current situation (weather, time, busyness, occasion) to make recommendations more specific and timely.
+For example: if it is rainy, suggest pushing hot drinks; if it is a festival, suggest themed combos; if it is packed, suggest quick items; if it is morning, focus on breakfast items.
+
+Return ONLY recommendations that are genuinely warranted. Do not pad to a fixed number.
 Rules:
-- "removal" is only valid if the menu has more than 4 items AND there is a clear underperformer
-- "combo" is only valid if there is a slow mover to bundle
-- "pricing" is only valid if there are margin issues
-- "promotion" is only valid if there is a star performer worth pushing
-- Return between 1 and 4 recommendations — whatever the data actually supports
+- "removal" only if menu has more than 4 items AND there is a clear underperformer
+- "combo" only if there is a slow mover to bundle OR the occasion/weather creates a combo opportunity
+- "pricing" only if there are margin issues
+- "promotion" only if there is a star performer or a situational push opportunity (weather, festival, time)
+- Return between 1 and 4 recommendations
 
 Each object must have:
-- title: string (short, max 8 words, mention the specific item by name)
-- detail: string (1–2 sentences, specific and practical, use actual numbers from the data)
+- title: string (short, max 8 words, mention specific item by name)
+- detail: string (1–2 sentences, specific and practical, reference the situation and actual numbers)
 - type: one of "pricing" | "removal" | "combo" | "promotion"
 - impact: one of "high" | "medium" | "low"
 
@@ -145,22 +158,24 @@ Respond with only valid JSON array — no markdown, no explanation.
     else throw new Error('Could not parse recommendations from response')
   }
 
-  return filterRecommendations(parsed, rows, flags)
+  return filterRecommendations(parsed, rows, flags, context)
 }
 
 // Remove rec types that the data doesn't support, regardless of what the AI returned
-function filterRecommendations(recs, rows, flags) {
-  const hasDanger   = flags.danger.length > 0
-  const hasWarning  = flags.warning.length > 0
-  const hasStar     = flags.success.length > 0
-  const menuIsLarge = rows.length > 4
-  const multiDanger = flags.danger.length > 1
+function filterRecommendations(recs, rows, flags, context = {}) {
+  const hasDanger      = flags.danger.length > 0
+  const hasWarning     = flags.warning.length > 0
+  const hasStar        = flags.success.length > 0
+  const menuIsLarge    = rows.length > 4
+  const multiDanger    = flags.danger.length > 1
+  const hasOccasion    = !!context.occasion
+  const badWeather     = ['rainy', 'cold'].includes(context.weather)
 
   return recs.filter(rec => {
     switch (rec.type) {
       case 'pricing':   return hasDanger
-      case 'combo':     return hasWarning
-      case 'promotion': return hasStar
+      case 'combo':     return hasWarning || hasOccasion || badWeather
+      case 'promotion': return hasStar || hasOccasion || badWeather
       case 'removal':   return multiDanger && menuIsLarge
       default:          return true
     }

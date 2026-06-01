@@ -6,6 +6,53 @@ import { getRecommendations } from '../utils/claudeApi'
 
 const DEMO_MODE = !import.meta.env.VITE_OPENROUTER_API_KEY
 
+const WEATHER_OPTIONS = [
+  { value: 'sunny',  label: '☀️ Sunny'  },
+  { value: 'cloudy', label: '☁️ Cloudy' },
+  { value: 'rainy',  label: '🌧️ Rainy'  },
+  { value: 'cold',   label: '🥶 Cold'   },
+  { value: 'humid',  label: '🌫️ Humid'  },
+]
+
+const TIME_OPTIONS = [
+  { value: 'morning',   label: '🌅 Morning'   },
+  { value: 'afternoon', label: '☀️ Afternoon' },
+  { value: 'evening',   label: '🌆 Evening'   },
+  { value: 'night',     label: '🌙 Night'     },
+]
+
+const BUSY_OPTIONS = [
+  { value: 'quiet',    label: 'Quiet'    },
+  { value: 'moderate', label: 'Moderate' },
+  { value: 'busy',     label: 'Busy'     },
+  { value: 'packed',   label: 'Packed'   },
+]
+
+function detectTimeOfDay() {
+  const h = new Date().getHours()
+  if (h >= 5  && h < 12) return 'morning'
+  if (h >= 12 && h < 17) return 'afternoon'
+  if (h >= 17 && h < 21) return 'evening'
+  return 'night'
+}
+
+function PillGroup({ options, value, onChange }) {
+  return (
+    <div className="pill-group">
+      {options.map(o => (
+        <button
+          key={o.value}
+          type="button"
+          className={`pill ${value === o.value ? 'pill--active' : ''}`}
+          onClick={() => onChange(o.value)}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function marginColor(pct) {
   if (pct < 25) return 'danger'
   if (pct < 45) return 'warning'
@@ -18,26 +65,26 @@ function newRow() {
 
 export default function DataTable({ rows, setRows, onAnalysisComplete, onBack }) {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError]   = useState(null)
+
+  const [weather,   setWeather]   = useState('sunny')
+  const [timeOfDay, setTimeOfDay] = useState(detectTimeOfDay())
+  const [busyness,  setBusyness]  = useState('moderate')
+  const [occasion,  setOccasion]  = useState('')
 
   function updateRow(id, field, value) {
     setRows(prev => prev.map(r => r.id === id ? { ...r, [field]: value } : r))
   }
 
-  function addRow() {
-    setRows(prev => [...prev, newRow()])
-  }
-
-  function deleteRow(id) {
-    setRows(prev => prev.filter(r => r.id !== id))
-  }
+  function addRow()         { setRows(prev => [...prev, newRow()]) }
+  function deleteRow(id)    { setRows(prev => prev.filter(r => r.id !== id)) }
 
   function coerce(row) {
     return {
       ...row,
-      sold: parseFloat(row.sold) || 0,
+      sold:  parseFloat(row.sold)  || 0,
       price: parseFloat(row.price) || 0,
-      cost: parseFloat(row.cost) || 0,
+      cost:  parseFloat(row.cost)  || 0,
     }
   }
 
@@ -51,8 +98,9 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
     setLoading(true)
     try {
       const flags = runRules(coerced)
-      const recommendations = await getRecommendations(coerced, flags)
-      onAnalysisComplete({ rows: coerced, flags, recommendations })
+      const context = { weather, timeOfDay, busyness, occasion: occasion.trim() || null }
+      const recommendations = await getRecommendations(coerced, flags, context)
+      onAnalysisComplete({ rows: coerced, flags, recommendations, context })
     } catch (err) {
       setError(err.message)
     } finally {
@@ -65,14 +113,8 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
       <div className="table-toolbar">
         <button className="btn btn--ghost btn--sm" onClick={onBack}>← Back</button>
         <h2 className="table-title">Your menu</h2>
-        <button
-          className="btn btn--primary"
-          onClick={handleAnalyse}
-          disabled={loading}
-        >
-          {loading ? (
-            <><span className="spinner" /> Analysing…</>
-          ) : 'Analyse →'}
+        <button className="btn btn--primary" onClick={handleAnalyse} disabled={loading}>
+          {loading ? <><span className="spinner" /> Analysing…</> : 'Analyse →'}
         </button>
       </div>
 
@@ -83,6 +125,34 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
       )}
 
       {error && <div className="table-error">{error}</div>}
+
+      {/* Context panel */}
+      <div className="context-panel">
+        <div className="context-panel-title">Right now at your café</div>
+        <div className="context-grid">
+          <div className="context-field">
+            <span className="context-label">Weather</span>
+            <PillGroup options={WEATHER_OPTIONS} value={weather} onChange={setWeather} />
+          </div>
+          <div className="context-field">
+            <span className="context-label">Time of day</span>
+            <PillGroup options={TIME_OPTIONS} value={timeOfDay} onChange={setTimeOfDay} />
+          </div>
+          <div className="context-field">
+            <span className="context-label">How busy</span>
+            <PillGroup options={BUSY_OPTIONS} value={busyness} onChange={setBusyness} />
+          </div>
+          <div className="context-field">
+            <span className="context-label">Festival / occasion <span className="context-label-hint">(optional)</span></span>
+            <input
+              className="cell-input context-occasion-input"
+              placeholder="e.g. Diwali, IPL finals, Valentine's Day…"
+              value={occasion}
+              onChange={e => setOccasion(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="table-wrap">
         <table className="data-table">
@@ -111,56 +181,28 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
                   layout
                 >
                   <td>
-                    <input
-                      className="cell-input cell-input--item"
-                      value={row.item}
-                      placeholder="Item name"
-                      onChange={e => updateRow(row.id, 'item', e.target.value)}
-                    />
+                    <input className="cell-input cell-input--item" value={row.item}
+                      placeholder="Item name" onChange={e => updateRow(row.id, 'item', e.target.value)} />
                   </td>
                   <td>
-                    <input
-                      className="cell-input cell-input--num"
-                      value={row.sold}
-                      placeholder="0"
-                      type="number"
-                      min="0"
-                      onChange={e => updateRow(row.id, 'sold', e.target.value)}
-                    />
+                    <input className="cell-input cell-input--num" value={row.sold}
+                      placeholder="0" type="number" min="0" onChange={e => updateRow(row.id, 'sold', e.target.value)} />
                   </td>
                   <td>
-                    <input
-                      className="cell-input cell-input--num"
-                      value={row.price}
-                      placeholder="0"
-                      type="number"
-                      min="0"
-                      onChange={e => updateRow(row.id, 'price', e.target.value)}
-                    />
+                    <input className="cell-input cell-input--num" value={row.price}
+                      placeholder="0" type="number" min="0" onChange={e => updateRow(row.id, 'price', e.target.value)} />
                   </td>
                   <td>
-                    <input
-                      className="cell-input cell-input--num"
-                      value={row.cost}
-                      placeholder="0"
-                      type="number"
-                      min="0"
-                      onChange={e => updateRow(row.id, 'cost', e.target.value)}
-                    />
+                    <input className="cell-input cell-input--num" value={row.cost}
+                      placeholder="0" type="number" min="0" onChange={e => updateRow(row.id, 'cost', e.target.value)} />
                   </td>
                   <td>
-                    {pct !== null ? (
-                      <span className={`margin-badge ${colorClass}`}>{pct}%</span>
-                    ) : (
-                      <span className="margin-badge margin--empty">—</span>
-                    )}
+                    {pct !== null
+                      ? <span className={`margin-badge ${colorClass}`}>{pct}%</span>
+                      : <span className="margin-badge margin--empty">—</span>}
                   </td>
                   <td>
-                    <button
-                      className="btn-delete"
-                      onClick={() => deleteRow(row.id)}
-                      title="Delete row"
-                    >✕</button>
+                    <button className="btn-delete" onClick={() => deleteRow(row.id)} title="Delete row">✕</button>
                   </td>
                 </motion.tr>
               )
