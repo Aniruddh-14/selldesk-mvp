@@ -7,37 +7,50 @@
 }
 
 :root {
-  --bg:          #FFFFFF;
-  --surface:     #F7F8FA;
-  --surface-2:   #EFF1F5;
-  --border:      #E4E6EA;
-  --border-hi:   #CBD0D8;
-  --accent:      #4F8EF7;
-  --accent-dim:  rgba(79, 142, 247, 0.08);
-  --accent-glow: rgba(79, 142, 247, 0.18);
-  --text:        #0D0D10;
-  --text-muted:  #A0A8B5;
-  --text-sub:    #6B7280;
+  /* Palette */
+  --beige:        #fff5d7;
+  --coral:        #ff5e6c;
+  --yellow:       #feb300;
+  --pink-leaf:    #ffaaab;
 
-  --danger:      #EF4444;
-  --danger-bg:   rgba(239, 68, 68, 0.07);
-  --warning:     #F59E0B;
-  --warning-bg:  rgba(245, 158, 11, 0.07);
-  --success:     #10B981;
-  --success-bg:  rgba(16, 185, 129, 0.07);
+  /* Surfaces */
+  --bg:           #fff5d7;
+  --surface:      #fffaeb;
+  --surface-2:    #ffefc0;
 
-  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md:   0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
-  --shadow-lg:   0 12px 40px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.04);
+  /* Borders */
+  --border:       #f0d98a;
+  --border-hi:    #e8c960;
 
-  --radius:      10px;
-  --radius-lg:   16px;
-  --radius-xl:   24px;
+  /* Accent = Coral Pink */
+  --accent:       #ff5e6c;
+  --accent-dim:   rgba(255, 94, 108, 0.1);
+  --accent-glow:  rgba(255, 94, 108, 0.25);
+
+  /* Text — warm dark brown on beige */
+  --text:         #1c0f00;
+  --text-sub:     #6b4c2a;
+  --text-muted:   #b89060;
+
+  /* Semantic */
+  --danger:       #ff5e6c;
+  --danger-bg:    rgba(255, 94, 108, 0.1);
+  --warning:      #feb300;
+  --warning-bg:   rgba(254, 179, 0, 0.12);
+  --success:      #2dbe7a;
+  --success-bg:   rgba(45, 190, 122, 0.1);
+
+  /* Shadows */
+  --shadow-sm:    0 1px 3px rgba(100,60,0,0.08), 0 1px 2px rgba(100,60,0,0.05);
+  --shadow-md:    0 4px 16px rgba(100,60,0,0.1),  0 1px 4px rgba(100,60,0,0.06);
+  --shadow-lg:    0 12px 40px rgba(100,60,0,0.12), 0 2px 8px rgba(100,60,0,0.06);
+
+  --radius:       10px;
+  --radius-lg:    16px;
+  --radius-xl:    24px;
 }
 
-html, body, #root {
-  height: 100%;
-}
+html, body, #root { height: 100%; }
 
 body {
   background: var(--bg);
@@ -48,14 +61,5 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  outline: none;
-}
-
-input {
-  font-family: inherit;
-  outline: none;
-}
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+input  { font-family: inherit; outline: none; }
