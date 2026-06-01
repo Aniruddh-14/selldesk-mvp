@@ -73,7 +73,7 @@ export default function DemoModal({ onClose }) {
                   className="form-input"
                   name="email"
                   type="email"
-                  placeholder="rahul@yourcafe.in"
+                  placeholder="john@yourcafe.com"
                   value={form.email}
                   onChange={handleChange}
                   required
