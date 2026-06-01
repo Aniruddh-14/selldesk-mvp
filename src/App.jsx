@@ -37,6 +37,9 @@ export default function App() {
       <header className="app-header">
         <span className="app-logo">Sell<span>desk</span></span>
         <span className="app-tagline">Revenue intelligence for café owners</span>
+        <a href="mailto:hello@selldesk.in" className="btn btn--primary btn--sm header-demo-btn">
+          Book a Demo
+        </a>
       </header>
 
       <main className="app-main">
@@ -69,12 +72,34 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <span className="app-footer-copy">© 2026 Selldesk. All rights reserved.</span>
-        <nav className="app-footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Contact</a>
-        </nav>
+        <div className="footer-top">
+          <div className="footer-brand">
+            <span className="footer-logo">Sell<span>desk</span></span>
+            <p className="footer-tagline">Revenue intelligence for independent café owners in India.</p>
+          </div>
+
+          <div className="footer-contact">
+            <div className="footer-section-label">Contact us</div>
+            <a href="mailto:hello@selldesk.in" className="footer-contact-item">
+              <span className="footer-contact-icon">✉</span>
+              hello@selldesk.in
+            </a>
+            <a href="tel:+919999999999" className="footer-contact-item">
+              <span className="footer-contact-icon">☎</span>
+              +91 99999 99999
+            </a>
+          </div>
+
+          <div className="footer-links-col">
+            <div className="footer-section-label">Legal</div>
+            <a href="#" className="footer-link">Privacy Policy</a>
+            <a href="#" className="footer-link">Terms of Service</a>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <span>© 2026 Selldesk. All rights reserved.</span>
+        </div>
       </footer>
     </div>
   )
