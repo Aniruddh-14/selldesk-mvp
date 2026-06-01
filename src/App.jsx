@@ -67,6 +67,15 @@ export default function App() {
           )}
         </AnimatePresence>
       </main>
+
+      <footer className="app-footer">
+        <span className="app-footer-copy">© 2026 Selldesk. All rights reserved.</span>
+        <nav className="app-footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact</a>
+        </nav>
+      </footer>
     </div>
   )
 }
