@@ -136,11 +136,33 @@ Respond with only valid JSON array — no markdown, no explanation.
 
   if (!text) throw lastError ?? new Error('All models failed')
 
+  let parsed
   try {
-    return JSON.parse(text)
+    parsed = JSON.parse(text)
   } catch {
     const match = text.match(/\[[\s\S]*\]/)
-    if (match) return JSON.parse(match[0])
-    throw new Error('Could not parse recommendations from response')
+    if (match) parsed = JSON.parse(match[0])
+    else throw new Error('Could not parse recommendations from response')
   }
+
+  return filterRecommendations(parsed, rows, flags)
+}
+
+// Remove rec types that the data doesn't support, regardless of what the AI returned
+function filterRecommendations(recs, rows, flags) {
+  const hasDanger   = flags.danger.length > 0
+  const hasWarning  = flags.warning.length > 0
+  const hasStar     = flags.success.length > 0
+  const menuIsLarge = rows.length > 4
+  const multiDanger = flags.danger.length > 1
+
+  return recs.filter(rec => {
+    switch (rec.type) {
+      case 'pricing':   return hasDanger
+      case 'combo':     return hasWarning
+      case 'promotion': return hasStar
+      case 'removal':   return multiDanger && menuIsLarge
+      default:          return true
+    }
+  })
 }
