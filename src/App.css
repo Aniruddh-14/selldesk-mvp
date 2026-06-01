@@ -274,8 +274,9 @@
 }
 
 .landing-divider {
-  height: 0;
-  margin: 28px 0;
+  height: 1px;
+  background: var(--border);
+  margin: 72px 0;
 }
 
 /* Hero */
@@ -286,12 +287,6 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,142,247,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(139,92,246,0.07) 0%, transparent 60%),
-    linear-gradient(160deg, #f0f5ff 0%, #ffffff 50%, #f5f0ff 100%);
-  border: 1px solid rgba(79,142,247,0.1);
 }
 
 .landing-eyebrow {
@@ -382,17 +377,6 @@
   margin-bottom: 48px;
 }
 
-/* Pain points */
-.landing-section--problem {
-  padding: 56px 48px;
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(239,68,68,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(245,158,11,0.06) 0%, transparent 60%),
-    linear-gradient(150deg, #fff8f5 0%, #ffffff 50%, #fffbf0 100%);
-  border: 1px solid rgba(239,68,68,0.08);
-}
-
 .pain-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -401,7 +385,8 @@
 }
 
 .pain-card {
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 24px;
@@ -436,17 +421,6 @@
   line-height: 1.6;
 }
 
-/* Steps */
-.landing-section--steps {
-  padding: 56px 48px;
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(ellipse 60% 50% at 0% 0%, rgba(16,185,129,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 100% 100%, rgba(79,142,247,0.08) 0%, transparent 60%),
-    linear-gradient(135deg, #f0fff8 0%, #ffffff 50%, #f0f5ff 100%);
-  border: 1px solid rgba(16,185,129,0.1);
-}
-
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -455,7 +429,8 @@
 }
 
 .step-card {
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 24px;
@@ -498,13 +473,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 72px 48px;
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(79,142,247,0.1) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 40% at 20% 0%, rgba(139,92,246,0.07) 0%, transparent 60%),
-    linear-gradient(170deg, #f5f0ff 0%, #ffffff 40%, #f0f5ff 100%);
-  border: 1px solid rgba(79,142,247,0.1);
+  padding-bottom: 48px;
 }
 
 .landing-cta-title {

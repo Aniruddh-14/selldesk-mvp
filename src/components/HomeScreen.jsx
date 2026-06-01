@@ -124,7 +124,7 @@ export default function HomeScreen({ onDataReady }) {
 
       {/* ── Problem ────────────────────────────────────── */}
       <motion.section
-        className="landing-section landing-section--problem"
+        className="landing-section"
         variants={stagger}
         initial="initial"
         whileInView="animate"
@@ -161,7 +161,7 @@ export default function HomeScreen({ onDataReady }) {
 
       {/* ── How it works ───────────────────────────────── */}
       <motion.section
-        className="landing-section landing-section--steps"
+        className="landing-section"
         variants={stagger}
         initial="initial"
         whileInView="animate"
