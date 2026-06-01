@@ -45,106 +45,35 @@
 }
 
 /* ─── Footer ─────────────────────────────────────────────── */
-.header-demo-btn {
-  margin-left: auto;
-  text-decoration: none;
-}
-
 .app-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 32px 48px;
   border-top: 1px solid var(--border);
   margin-top: auto;
-}
-
-.footer-top {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr;
-  gap: 40px;
-  padding: 48px;
-  max-width: 1040px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.footer-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-logo {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.4px;
-}
-.footer-logo span { color: var(--accent); }
-
-.footer-tagline {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 240px;
-}
-
-.footer-section-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-}
-
-.footer-contact {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-contact-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-sub);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.footer-contact-item:hover { color: var(--accent); }
-
-.footer-contact-icon {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.footer-links-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-link {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-sub);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.footer-link:hover { color: var(--text); }
-
-.footer-bottom {
-  border-top: 1px solid var(--border);
-  padding: 18px 48px;
-  font-size: 12px;
-  color: var(--text-muted);
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  .footer-top    { grid-template-columns: 1fr; padding: 32px 20px; gap: 28px; }
-  .footer-bottom { padding: 16px 20px; }
-  .header-demo-btn { display: none; }
+.app-footer-links {
+  display: flex;
+  gap: 28px;
+}
+
+.app-footer-links a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-sub);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.app-footer-links a:hover { color: var(--text); }
+
+.app-footer-copy {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 /* ─── Shared buttons ──────────────────────────────────────── */
