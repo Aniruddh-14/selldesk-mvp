@@ -544,6 +544,16 @@
   color: var(--accent);
 }
 
+.table-csv-warning {
+  padding: 10px 16px;
+  background: var(--warning-bg);
+  border: 1px solid rgba(254,179,0,0.3);
+  border-radius: var(--radius);
+  color: #7a5000;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .table-error {
   padding: 10px 16px;
   background: var(--danger-bg);

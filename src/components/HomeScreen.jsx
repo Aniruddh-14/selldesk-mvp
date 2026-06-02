@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { parseCSV } from '../utils/csvParser'
 
@@ -64,6 +64,8 @@ const staggerFast = {
 
 export default function HomeScreen({ onDataReady }) {
   const fileRef = useRef(null)
+  const [parsing, setParsing] = useState(false)
+  const [parseError, setParseError] = useState(null)
 
   function handleManual() {
     onDataReady(SAMPLE_ROWS.map(r => ({ ...r, id: crypto.randomUUID() })))
@@ -73,17 +75,22 @@ export default function HomeScreen({ onDataReady }) {
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = (evt) => {
-      const result = parseCSV(evt.target.result)
-      if (result.rows.length === 0) {
-        alert('No valid rows found. Check your CSV format: item,sold,price,cost')
-        return
+    reader.onload = async (evt) => {
+      setParseError(null)
+      setParsing(true)
+      try {
+        const result = await parseCSV(evt.target.result)
+        if (result.rows.length === 0) {
+          setParseError('No valid rows found in this CSV. Make sure it has item names and prices.')
+          return
+        }
+        onDataReady(result.rows, result.warning)
+      } catch (err) {
+        setParseError('Failed to parse CSV: ' + err.message)
+      } finally {
+        setParsing(false)
+        e.target.value = ''
       }
-      if (result.isTransaction) {
-        const weeks = result.weeks ?? 1
-        alert(`Detected transaction data — aggregated ${result.rows.length} items over ~${weeks} week${weeks !== 1 ? 's' : ''}.\n\nCost column is not in your CSV — please fill it in on the next screen.`)
-      }
-      onDataReady(result.rows)
     }
     reader.readAsText(file)
   }
@@ -113,14 +120,16 @@ export default function HomeScreen({ onDataReady }) {
           <button className="btn btn--primary btn--lg" onClick={handleManual}>
             Try with sample data →
           </button>
-          <button className="btn btn--ghost btn--lg" onClick={() => fileRef.current?.click()}>
-            Upload my CSV
+          <button className="btn btn--ghost btn--lg" onClick={() => !parsing && fileRef.current?.click()} disabled={parsing}>
+            {parsing ? <><span className="spinner spinner--dark" /> Reading CSV…</> : 'Upload my CSV'}
           </button>
           <input ref={fileRef} type="file" accept=".csv,text/csv"
             style={{ display: 'none' }} onChange={handleFileChange} />
         </motion.div>
         <motion.p className="landing-hero-note" variants={fadeUp} transition={{ duration: 0.4 }}>
-          No account needed. Free to use.
+          {parseError
+            ? <span style={{ color: 'var(--danger)' }}>{parseError}</span>
+            : 'No account needed. Upload any CSV — AI maps the columns.'}
         </motion.p>
       </motion.section>
 

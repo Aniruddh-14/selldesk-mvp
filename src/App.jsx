@@ -17,9 +17,11 @@ export default function App() {
   const [rows, setRows] = useState([])
   const [results, setResults] = useState(null)
   const [showDemo, setShowDemo] = useState(false)
+  const [csvWarning, setCsvWarning] = useState(null)
 
-  function handleDataReady(initialRows) {
+  function handleDataReady(initialRows, warning = null) {
     setRows(initialRows)
+    setCsvWarning(warning)
     setScreen('table')
   }
 
@@ -58,6 +60,7 @@ export default function App() {
                 setRows={setRows}
                 onAnalysisComplete={handleAnalysisComplete}
                 onBack={handleReset}
+                csvWarning={csvWarning}
               />
             </motion.div>
           )}

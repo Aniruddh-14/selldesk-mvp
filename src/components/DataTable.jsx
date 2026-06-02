@@ -63,7 +63,7 @@ function newRow() {
   return { id: crypto.randomUUID(), item: '', sold: '', price: '', cost: '' }
 }
 
-export default function DataTable({ rows, setRows, onAnalysisComplete, onBack }) {
+export default function DataTable({ rows, setRows, onAnalysisComplete, onBack, csvWarning }) {
   const [loading, setLoading] = useState(false)
   const [error, setError]   = useState(null)
 
@@ -124,6 +124,7 @@ export default function DataTable({ rows, setRows, onAnalysisComplete, onBack })
         </div>
       )}
 
+      {csvWarning && <div className="table-csv-warning">{csvWarning}</div>}
       {error && <div className="table-error">{error}</div>}
 
       {/* Context panel */}
