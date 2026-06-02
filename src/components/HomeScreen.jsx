@@ -74,12 +74,16 @@ export default function HomeScreen({ onDataReady }) {
     if (!file) return
     const reader = new FileReader()
     reader.onload = (evt) => {
-      const rows = parseCSV(evt.target.result)
-      if (rows.length === 0) {
+      const result = parseCSV(evt.target.result)
+      if (result.rows.length === 0) {
         alert('No valid rows found. Check your CSV format: item,sold,price,cost')
         return
       }
-      onDataReady(rows)
+      if (result.isTransaction) {
+        const weeks = result.weeks ?? 1
+        alert(`Detected transaction data — aggregated ${result.rows.length} items over ~${weeks} week${weeks !== 1 ? 's' : ''}.\n\nCost column is not in your CSV — please fill it in on the next screen.`)
+      }
+      onDataReady(result.rows)
     }
     reader.readAsText(file)
   }
